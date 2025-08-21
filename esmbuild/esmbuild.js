@@ -9,21 +9,23 @@ const color = (n, v) => `\x1b[${n}m${v}\x1b[0m`
 const defaultPath = join(process.cwd(), "src")
 const defaultOutdir = join(process.cwd(), "dist")
 
-async function getBuildOptions(path) {
-    // Use only the main index file as entry point
-    const indexFile = `${path}/index.tsx`;
-    const indexJsFile = `${path}/index.js`;
-    
-    // Check which index file exists
-    const fs = require('fs');
-    let entryPoints = [];
-    if (fs.existsSync(indexFile)) {
-        entryPoints.push(indexFile);
-    } else if (fs.existsSync(indexJsFile)) {
-        entryPoints.push(indexJsFile);
-    } else {
-        // Fallback to finding all files
-        entryPoints = await globby([`${path}/**/*.(t|j)s*`]);
+async function getBuildOptions(path, entryPoints = null) {
+    if (!entryPoints) {
+        // Use only the main index file as entry point
+        const indexFile = `${path}/index.tsx`;
+        const indexJsFile = `${path}/index.js`;
+        
+        // Check which index file exists
+        const fs = require('fs');
+        entryPoints = [];
+        if (fs.existsSync(indexFile)) {
+            entryPoints.push(indexFile);
+        } else if (fs.existsSync(indexJsFile)) {
+            entryPoints.push(indexJsFile);
+        } else {
+            // Fallback to finding all files
+            entryPoints = await globby([`${path}/**/*.(t|j)s*`]);
+        }
     }
 
     return {
@@ -37,9 +39,29 @@ async function getBuildOptions(path) {
 }
 
 async function build(path = defaultPath, outdir = defaultOutdir) {
+    const fs = require('fs');
     outdir = resolve(outdir)
+    
+    // Build main bundle
     await esbuild.build({ outdir, ...(await getBuildOptions(path)) })
-    console.log(`Build done at ${outdir}`)
+    console.log(`Main build done at ${outdir}`)
+    
+    // Build individual modules
+    const moduleDirs = [
+        { src: `${path}/ogl/index.js`, outDir: `${outdir}/ogl` },
+        { src: `${path}/button/index.js`, outDir: `${outdir}/button` },
+        { src: `${path}/battery/index.js`, outDir: `${outdir}/battery` }
+    ];
+    
+    for (const moduleInfo of moduleDirs) {
+        if (fs.existsSync(moduleInfo.src)) {
+            await esbuild.build({ 
+                outdir: moduleInfo.outDir, 
+                ...(await getBuildOptions(path, [moduleInfo.src])) 
+            });
+            console.log(`Module build done at ${moduleInfo.outDir}`);
+        }
+    }
 }
 
 async function serve(path = defaultPath, port = 8000) {
