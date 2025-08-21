@@ -8,9 +8,16 @@ import { IridescentBackground } from "https://pesky12.github.io/framer-esm-host/
 
 export default function Component() {
     return (
-        <IridescentBackground className="w-full h-screen">
-            <div className="flex items-center justify-center h-full">
-                <h1 className="text-4xl font-bold text-white">
+        <IridescentBackground style={{ width: "100%", height: "100vh" }}>
+            <div style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                height: "100%",
+                color: "white",
+                textAlign: "center"
+            }}>
+                <h1 style={{ fontSize: "3rem", fontWeight: "bold" }}>
                     Beautiful Iridescent Background
                 </h1>
             </div>
@@ -25,11 +32,22 @@ import { AnimatedGridBackground } from "https://pesky12.github.io/framer-esm-hos
 
 export default function Component() {
     return (
-        <AnimatedGridBackground className="w-full h-screen">
-            <div className="flex items-center justify-center h-full">
-                <div className="text-center text-white">
-                    <h1 className="text-4xl font-bold mb-4">Animated Grid</h1>
-                    <p className="text-xl">Moving grid background effect</p>
+        <AnimatedGridBackground style={{ width: "100%", height: "100vh" }}>
+            <div style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                height: "100%",
+                color: "white",
+                textAlign: "center"
+            }}>
+                <div>
+                    <h1 style={{ fontSize: "3rem", fontWeight: "bold", marginBottom: "1rem" }}>
+                        Animated Grid
+                    </h1>
+                    <p style={{ fontSize: "1.5rem" }}>
+                        Moving grid background effect
+                    </p>
                 </div>
             </div>
         </AnimatedGridBackground>
