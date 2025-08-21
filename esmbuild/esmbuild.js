@@ -50,7 +50,8 @@ async function build(path = defaultPath, outdir = defaultOutdir) {
     const moduleDirs = [
         { src: `${path}/ogl/index.js`, outDir: `${outdir}/ogl` },
         { src: `${path}/button/index.js`, outDir: `${outdir}/button` },
-        { src: `${path}/battery/index.js`, outDir: `${outdir}/battery` }
+        { src: `${path}/battery/index.js`, outDir: `${outdir}/battery` },
+        { src: `${path}/reactbits/index.js`, outDir: `${outdir}/reactbits` }
     ];
     
     for (const moduleInfo of moduleDirs) {
