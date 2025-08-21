@@ -93,7 +93,7 @@ jobs:
               <h3>Usage in Framer</h3>
               <p>Add this to your Framer code component:</p>
               <pre><code>// Import all components (React + OGL)
-          import { Button, Renderer, Program, Mesh } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.js"
+          import { Button, Iridescence, Renderer, Program, Mesh } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.js"
           
           // Or import ONLY OGL WebGL components (recommended for WebGL work)
           import { Renderer, Program, Mesh, Camera, Vec3 } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/ogl/index.js"
@@ -101,6 +101,15 @@ jobs:
           // Individual React components
           import { Button } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/button/index.js"
           import { Battery } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/battery/index.js"
+          import { Iridescence } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/iridescence/index.js"
+          
+          // Example Iridescence usage:
+          &lt;Iridescence
+            color={[1, 1, 1]}
+            mouseReact={false}
+            amplitude={0.1}
+            speed={1.0}
+          /&gt;
           
           export default Button</code></pre>
               
@@ -110,6 +119,7 @@ jobs:
                   <li><a href="./ogl/index.js">OGL WebGL Only</a> - No React dependencies (~53KB)</li>
                   <li><a href="./button/index.js">Button Component</a> - Individual React component</li>
                   <li><a href="./battery/index.js">Battery Component</a> - Individual React component</li>
+                  <li><a href="./iridescence/index.js">Iridescence Component</a> - WebGL iridescence shader effect</li>
                   <li><a href="./esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js">Versioned Bundle</a> - Stable versioned URL</li>
               </ul>
               
@@ -119,6 +129,7 @@ jobs:
                   <li><strong>Button</strong> - Customizable button component</li>
                   <li><strong>MotionButton</strong> - Animated button using Framer Motion</li>
                   <li><strong>Battery</strong> - Battery indicator component</li>
+                  <li><strong>Iridescence</strong> - WebGL-powered iridescent shader effect component with mouse interaction</li>
               </ul>
               
               <h4>OGL WebGL Components</h4>

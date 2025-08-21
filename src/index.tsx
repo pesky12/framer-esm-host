@@ -2,16 +2,7 @@
 export { Button } from "./Button";
 export { Battery } from "./Battery";
 export { MotionButton } from "./MotionButton";
-
-// React Bits Components
-export {
-    IridescentBackground,
-    AnimatedGridBackground,
-    TailwindGradientBackground,
-    CSSGridBackground,
-    AnimatedContent,
-    ReactBitsShowcase
-} from "./ReactBits";
+export { default as Iridescence } from "./Iridescence";
 
 // OGL Components - Re-export directly from ogl package
 export {
