@@ -59,6 +59,8 @@ jobs:
           mkdir -p pages
           mkdir -p pages/esmbuild@${{ steps.extract_version.outputs.VERSION }}
           cp -r dist/* pages/esmbuild@${{ steps.extract_version.outputs.VERSION }}/
+          # Also copy to root for direct module access
+          cp -r dist/* pages/
           
       - name: Create index page
         run: |
@@ -83,22 +85,32 @@ jobs:
               
               <div class="version">
                   <h3>Latest Version: ${{ steps.extract_version.outputs.VERSION }}</h3>
-                  <p>Import URL: <span class="code">https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js</span></p>
+                  <p>Main Bundle: <span class="code">https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.js</span></p>
+                  <p>OGL Only: <span class="code">https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/ogl/index.js</span></p>
+                  <p>Versioned: <span class="code">https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js</span></p>
               </div>
               
               <h3>Usage in Framer</h3>
               <p>Add this to your Framer code component:</p>
-              <pre><code>// Import React components
-          import { Button } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js"
+              <pre><code>// Import all components (React + OGL)
+          import { Button, Renderer, Program, Mesh } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.js"
           
-          // Or import OGL WebGL components
-          import { Renderer, Program, Mesh, Triangle } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js"
+          // Or import ONLY OGL WebGL components (recommended for WebGL work)
+          import { Renderer, Program, Mesh, Camera, Vec3 } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/ogl/index.js"
+          
+          // Individual React components
+          import { Button } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/button/index.js"
+          import { Battery } from "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/battery/index.js"
           
           export default Button</code></pre>
               
-              <h3>Available Components</h3>
+              <h3>Available Module Paths</h3>
               <ul>
-                  <li><a href="./esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js">All Components (index)</a></li>
+                  <li><a href="./index.js">All Components</a> - React + OGL (~53KB)</li>
+                  <li><a href="./ogl/index.js">OGL WebGL Only</a> - No React dependencies (~53KB)</li>
+                  <li><a href="./button/index.js">Button Component</a> - Individual React component</li>
+                  <li><a href="./battery/index.js">Battery Component</a> - Individual React component</li>
+                  <li><a href="./esmbuild@${{ steps.extract_version.outputs.VERSION }}/index.js">Versioned Bundle</a> - Stable versioned URL</li>
               </ul>
               
               <h3>Component Types</h3>
