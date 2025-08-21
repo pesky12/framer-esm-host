@@ -10,11 +10,25 @@ const defaultPath = join(process.cwd(), "src")
 const defaultOutdir = join(process.cwd(), "dist")
 
 async function getBuildOptions(path) {
-    const entryPoints = await globby([`${path}/**/*.(t|j)s*`])
+    // Use only the main index file as entry point
+    const indexFile = `${path}/index.tsx`;
+    const indexJsFile = `${path}/index.js`;
+    
+    // Check which index file exists
+    const fs = require('fs');
+    let entryPoints = [];
+    if (fs.existsSync(indexFile)) {
+        entryPoints.push(indexFile);
+    } else if (fs.existsSync(indexJsFile)) {
+        entryPoints.push(indexJsFile);
+    } else {
+        // Fallback to finding all files
+        entryPoints = await globby([`${path}/**/*.(t|j)s*`]);
+    }
 
     return {
         entryPoints,
-        // minify: true,
+        minify: true,
         format: 'esm',
         bundle: true,
         external: ["react", "react/jsx-runtime", "react-dom", "framer", "framer-motion"],

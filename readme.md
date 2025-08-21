@@ -2,8 +2,8 @@
 
 This is an example how to set up a repository that builds code which can be consumed in Framer. It builds standard JavaScript into ES Modules that you can both use locally for development or to deploy to any http server for distribution across your team or the internet.
 
-- `yarn run serve` This runs a local web server with the built code.
-- `yarn run build` This builds the code in `dist`.
+- `npm run serve` This runs a local web server with the built code.
+- `npm run build` This builds the code in `dist`.
 
 All the magic is in the `esmbuild` folder. Contributions are welcome.
 
@@ -13,13 +13,15 @@ All the magic is in the `esmbuild` folder. Contributions are welcome.
 - Custom plugin to handle ESM imports and rewrite local import paths.
 - CSS Modules plugin to support writing css scoped modules.
 - GitHub Workflow to deploy versioned code on GitHub pages.
+- Automatic minification for production builds.
+- Support for both npm and legacy systems.
 
 ## 🏁 Quickstart
 
 Start the development server with:
 
 ```
-yarn run serve
+npm run serve
 ```
 
 Open Framer, create a code file and paste the following:
@@ -76,17 +78,36 @@ Beware that esm was designed for many small files that the browser can cache and
 
 ## Deployment
 
-Once you are ready to deploy your code, it should be uploaded to an https endpoint with a versioned url. We have set up a [Workflow](https://github.com/framer/example-framer-esm-setup/actions) to build the code and deploy to [GitHub Pages](https://github.com/framer/example-framer-esm-setup/tree/pages). To ship a next version you simply type:
+Once you are ready to deploy your code, it should be uploaded to an https endpoint with a versioned url. We have set up a [GitHub Pages Workflow](.github/workflows/deploy.yml) to build the code and deploy to GitHub Pages. To ship a new version you simply type:
 
 ```
-yarn run deploy
+npm run deploy
 ```
 
-You'll have to type a new version (let's say `1.0.4`), and soon the code will be deployed to: https://framer.github.io/example-framer-esm-setup/esmbuild@1.0.4/index.js. You can now update your imports to the production url and you'll get the exact same result:
+This will:
+1. Bump the patch version (e.g., 1.0.8 → 1.0.9)
+2. Create and push a version tag
+3. Trigger the GitHub Pages deployment workflow
+
+The workflow will build your code and deploy it to: `https://[your-username].github.io/[repository-name]/esmbuild@[version]/index.js`
+
+For example: `https://pesky12.github.io/framer-esm-host/esmbuild@1.0.9/index.js`
+
+You can now update your imports to the production url and you'll get the exact same result:
 
 ```.tsx
-import { Button } from "https://framer.github.io/example-framer-esm-setup/esmbuild@1.0.4/index.js"
+import { Button } from "https://pesky12.github.io/framer-esm-host/esmbuild@1.0.9/index.js"
 ```
+
+### Version Types
+
+- `npm run deploy` - Patch version (1.0.8 → 1.0.9)
+- `npm run deploy:minor` - Minor version (1.0.8 → 1.1.0)
+- `npm run deploy:major` - Major version (1.0.8 → 2.0.0)
+
+### Manual Deployment
+
+You can also trigger a deployment manually from GitHub Actions by going to the "Actions" tab and running the "Deploy to GitHub Pages" workflow with a specific version number.
 
 It's very important to version your code, so endpoints stay stable. To move to a new version, you simply update the import urls wherever you need.
 
